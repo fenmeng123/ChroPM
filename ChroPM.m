@@ -251,17 +251,20 @@ function DataTypePopupmenu_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns DataTypePopupmenu contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from DataTypePopupmenu
 contents = cellstr(get(hObject,'String'));
-DataType=contents{get(hObject,'Value')};
+DataType = get(hObject,'Value');
 switch DataType
-    case {'mat files'}
+    case 2
         set(handles.VarNameEdit,'enable','on')
         set(handles.VarNameEdit,'String','input your variable name')
-    case {'results from DynamicBC(FCM):Sliding Window'}
+        fprintf('The DFC data type has been set to %s\n',contents{DataType})
+    case 3
         set(handles.VarNameEdit,'String','FCM')
         set(handles.VarNameEdit,'enable','off')
-    case {'results from DynamicBC(FCM):FLS'}
+        fprintf('The DFC data type has been set to %s\n',contents{DataType})
+    case 4
         set(handles.VarNameEdit,'String','FCM')
         set(handles.VarNameEdit,'enable','off')
+        fprintf('The DFC data type has been set to %s\n',contents{DataType})
     otherwise
         fprintf('Please select your data type\n');
 end
