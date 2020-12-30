@@ -23,13 +23,14 @@ function varargout = ChroPM(varargin)
 % Edit the above text to modify the response to help ChroPM
 
 % Last Modified by GUIDE v2.5 28-Dec-2020 19:08:23
-
+% Modificated History
 % Chronectome Predictive Modeling toolbox developed by Kunru Song 2020.8.24
 % Update variability calculator with Jin-Liu's code by Kunru Song 2020.10.07
 % DCC calculator developed by Kunru Song 2020.10.07
 % Automatically generate FC index file by Kunru Song 2020.10.08
 % Add predictive modeling panel by Kunru Song 2020.10.30
 % Add autosave parameter function for CCC by Kunru Song 2020.12.19
+% Optimization for CCC workflow and subfunction by Kunru Song 2020.12.29
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
