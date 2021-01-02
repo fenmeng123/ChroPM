@@ -540,8 +540,11 @@ function TaskDesign_pushbutton_Callback(hObject, eventdata, handles)
 % spm_jobman('interactive','','spm.stats.fmri_spec')%open spm batch gui 
 
 %check spm path
-if isempty(spm('dir'))
-   error('SPM directory is required!') 
+try
+    fprintf('SPM directory:\t')
+    disp(spm('dir'))
+catch
+   error('Not found, SPM directory is required!') 
 end
 fprintf('SPM version:\t%s\n',spm('version'))
 %select output path
