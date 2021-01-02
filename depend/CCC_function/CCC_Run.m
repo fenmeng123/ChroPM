@@ -1,4 +1,4 @@
-function RunCCC(handles)
+function CCC_Run(handles)
 %Main funcion for ChroPM-Chronnectome Characteristic Calculator
 %Written by Kunru Song 2020.10.09
 % Modified History
@@ -30,6 +30,7 @@ Prefix=get(handles.Prefix_edit,'String');
 diary(fullfile(handles.OutputPath,['ChroPM_Log_CCC_' NowTime '.txt']))
 % check CCC settings
 if sum(FlagCCC)==0
+    diary('off')
     error('No Chronectome characteristics need to be calculated\n')
 end
 
@@ -37,6 +38,7 @@ for isub = 1:SubNo
     fprintf('Load Subject data: %s\n',handles.SubList{isub})
     switch handles.DataType
         case 1
+            diary('off')
             error('DFC data type has not been correctly chosen.')
         case 2
             

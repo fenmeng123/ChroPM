@@ -234,7 +234,7 @@ function CCCrun_button_Callback(hObject, eventdata, handles)
 % hObject    handle to CCCrun_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-RunCCC(handles)
+CCC_Run(handles)
 
 % --- Executes when figure1 is resized.
 function figure1_SizeChangedFcn(hObject, eventdata, handles)
