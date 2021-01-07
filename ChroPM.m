@@ -498,38 +498,26 @@ function RunDCC_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to RunDCC_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-ROINo=str2double(cell2mat(inputdlg('the number of ROI:','',[1 25],{'268'})));
+
 SubjectFiles=handles.DCCsublist; %get path of ROI signals files
 SubNo=length(SubjectFiles);
 fprintf('Creating DFC mask...\n')
-DFCmask=triu(ones(ROINo,ROINo))-diag(diag(ones(ROINo,ROINo)));%generate DFC mask matrix(upper triangular matrix without diag)
-ScansNo=str2double(cell2mat(inputdlg('the number of scans:','',[1 25],{'240'})));
-FCNo=ROINo*(ROINo-1)/2;
-DCCdataset=struct('ID',[],'DCCmat',[]);
+% ScansNo=str2double(cell2mat(inputdlg('the number of scans:','',[1 25],{'240'})));
 %dipslay basic infomation
+[DCCdataset,DFCmask,ROINo,ScansNo,FCNo]=DCC_Run(SubjectFiles,SubNo);
+
 set(handles.TaskSubNo_text,'string',['Subjects:' num2str(SubNo)])
 set(handles.TaskROINo_text,'string',['ROI:' num2str(ROINo)])
 set(handles.TaskScansNo_text,'string',['Scans:' num2str(ScansNo)])
-%estimate DCC
-for i=1:SubNo
-    fprintf('Now loading data from %s\n',SubjectFiles(i).name)
-    ROItc=load(fullfile(SubjectFiles(i).folder,SubjectFiles(i).name)); %load the ROI time course
-    fprintf('Dynamic conditional correlation estimating...\n');
-    tempDCCmat=DCC(ROItc.ROISignals);
-    tempDCCmat=tempDCCmat.*DFCmask;
-    tempDCCmat=reshape(tempDCCmat,ROINo*ROINo,ScansNo);%reshape to FC-by-scans
-    tempDCCmat(~(sum(logical(tempDCCmat),2)==ScansNo),:)=[];%delete the ROI whose time points are unequal to scans number
-    DCCdataset(i).DCCmat=tempDCCmat';%transpose to scans-by-FC
-    DCCdataset(i).ID=SubjectFiles(i).name;
-end
-%generate DFC index table for subsequent data processing
+
 [row_DFCindex,col_DFCindex]=find(DFCmask);
-FC_ColumnNo=1:FCNo;FC_ColumnNo=FC_ColumnNo';
+FC_ColumnNo=[1:FCNo]';
 DFCindex=table(FC_ColumnNo,row_DFCindex,col_DFCindex);%get DFC index table;
-save(handles.DCCoutPath,'DCCdataset')
-save(handles.DCCoutPath,'DFCindex')
-set(handles.TaskDFCdatapath_edit,'string',OutPath)
-handles.DCCdataset=DCCdataset;
+DCCdatasetOutput=fullfile(handles.DCCoutPath,'DCCdataset.mat');
+DCCindexOutput=fullfile(handles.DCCoutPath,'DCC_DFCindex.mat');
+save(DCCdatasetOutput,'DCCdataset')
+save(DCCindexOutput,'DFCindex')
+set(handles.TaskDFCdatapath_edit,'string',DCCdatasetOutput)
 guidata(hObject,handles)
 
 % --- Executes on button press in TaskDesign_pushbutton.
