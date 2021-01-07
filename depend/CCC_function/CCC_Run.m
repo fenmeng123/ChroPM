@@ -43,16 +43,16 @@ for isub = 1:SubNo
         case 2
             
         case {3,4}
+% When handles.DataType==3, it means DynamicBC(FCM) Sliding Window When
+% handles.DataType==4, it means DynamicBC(FCM) FLS. handles.DataType-2
+% means using dimension 1 or dimension 2 to get the number of time windows,
+% for Sliding Window(dim 1) and FLS(dim 2)
             temp = dir(fullfile(DataPath{isub},'*.mat'));%sublist index file
             DataDynamic.DFC=load(fullfile(temp.folder,temp.name));clear temp
-            fprintf('Nodes:%d Edges:%d\n',Num_nodes,Num_edges);
             Num_nodes=size(DataDynamic(1).DFC.FCM.Matrix{1},1);%get the number of nodes
             Num_edges=Num_nodes*(Num_nodes-1)/2;
             Num_windows=size(DataDynamic(1).DFC.FCM.Matrix,handles.DataType-2);%get the number of sliding windows
-            % When handles.DataType==3, it means DynamicBC(FCM) Sliding Window
-            % When handles.DataType==4, it means DynamicBC(FCM) FLS.
-            % handles.DataType-2 means using dimension 1 or dimension 2 to get
-            % the number of time windows, for Sliding Window(dim 1) and FLS(dim 2)
+            fprintf('Nodes:%d Edges:%d\n',Num_nodes,Num_edges);
             FC_dyn=zeros(Num_nodes,Num_nodes,Num_windows);%FC_dyn: M*M*T a three-dimention matrix
             fprintf('Reorganize dynamic FC for %s\n',handles.SubList{isub});
             for jtime = 1:Num_windows
@@ -71,13 +71,13 @@ for isub = 1:SubNo
         FC_index.ROI2=FCy;
         FC_index.No_column=[1:Num_edges]';
         FC_index=struct2table(FC_index);
-        %Debug: Pre-allocate memory for dynamic characteristics by Kunru Song 2020.10.09
-        DFC_str=zeros(SubNo,Num_edges);
-        DFC_sta=zeros(SubNo,Num_edges);
-        DFC_var=zeros(SubNo,Num_edges);
-        tGV=zeros(SubNo,Num_nodes);
-        DFC_sd=zeros(SubNo,Num_edges);
     end
+    %Pre-allocate memory for dynamic characteristics
+    DFC_str=zeros(SubNo,Num_edges);
+    DFC_sta=zeros(SubNo,Num_edges);
+    DFC_var=zeros(SubNo,Num_edges);
+    tGV=zeros(SubNo,Num_nodes);
+    DFC_sd=zeros(SubNo,Num_edges);
     FC=struct('X',[]);
     fprintf('Reshape dynamic FC for %s\n',handles.SubList{isub});
     for ifc =1:Num_edges
@@ -89,12 +89,12 @@ for isub = 1:SubNo
     %FC(ifc).X(i,:) 索引第i位被试的第ifc条动态功能链接
     if Cfg.FlagStr
         fprintf('Estimating DFC strength for %s\n',handles.SubList{isub})
-        DFC_str(isub,:)=CCC_DFC_Str(FC,Num_edges);
+        DFC_str(isub,:)=CCC_DFC_Str(FC,Num_edges,Num_windows);
     end
     %% calculate DFC-sta
     if Cfg.FlagSta
         fprintf('Estimating DFC stablility for %s\n',handles.SubList{isub})
-        DFC_sta(isub,:)=CCC_DFC_Sta(FC,Num_edges);
+        DFC_sta(isub,:)=CCC_DFC_Sta(FC,Num_edges,Num_windows);
     end
     
     %% calculate DFC-var
@@ -167,6 +167,6 @@ fprintf('sublist index file has been saved to %s\n',handles.OutputPath)
 save(fullfile(handles.OutputPath,['FCindex_' NowTime '.mat']),'FC_index');
 fprintf('FC index file has been saved to %s\n',handles.OutputPath)
 
-fprintf('\n\nCongratulations!All is done:)\n\n')
+fprintf('\n\nCongratulations!CCC workflow has been finished:)\n\n')
 diary('off')
 save(fullfile(handles.OutputPath,['CCC_AutoSave' NowTime '.mat']),'Cfg')

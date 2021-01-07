@@ -1,4 +1,4 @@
-function DFC_sta=CCC_DFC_Sta(FC,Num_edges)
+function DFC_sta=CCC_DFC_Sta(FC,Num_edges,Num_windows)
 DFC_sta=zeros(1,Num_edges);
 for ifc = 1:Num_edges
     tempfc = FC(ifc).X;
