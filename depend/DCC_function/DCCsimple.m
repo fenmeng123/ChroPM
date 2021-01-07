@@ -1,4 +1,4 @@
-function [Ct, Ht] = DCC(dat)
+function [Ct, Ht] = DCCsimple(dat)
 % function [Ct, Ht] = DCC(dat)
 %
 % Estimate a multivariate GARCH model using the DCC estimator of Engle and Sheppard

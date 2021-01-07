@@ -514,9 +514,13 @@ set(handles.TaskScansNo_text,'string',['Scans:' num2str(ScansNo)])
 FC_ColumnNo=[1:FCNo]';
 DFCindex=table(FC_ColumnNo,row_DFCindex,col_DFCindex);%get DFC index table;
 DCCdatasetOutput=fullfile(handles.DCCoutPath,'DCCdataset.mat');
-DCCindexOutput=fullfile(handles.DCCoutPath,'DCC_DFCindex.mat');
+DCC_DFCindexOutput=fullfile(handles.DCCoutPath,'DCC_DFCindex.mat');
+DCC_SUBindexOutput=fullfile(handles.DCCoutPath,'DCC_SUBindex.mat');
+
 save(DCCdatasetOutput,'DCCdataset')
-save(DCCindexOutput,'DFCindex')
+save(DCC_DFCindexOutput,'DFCindex')
+save(DCC_SUBindexOutput,'SubjectFiles')
+
 set(handles.TaskDFCdatapath_edit,'string',DCCdatasetOutput)
 guidata(hObject,handles)
 
