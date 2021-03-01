@@ -501,10 +501,9 @@ function RunDCC_pushbutton_Callback(hObject, eventdata, handles)
 
 SubjectFiles=handles.DCCsublist; %get path of ROI signals files
 SubNo=length(SubjectFiles);
-fprintf('Creating DFC mask...\n')
 % ScansNo=str2double(cell2mat(inputdlg('the number of scans:','',[1 25],{'240'})));
 %dipslay basic infomation
-[DCCdataset,DFCmask,ROINo,ScansNo,FCNo]=DCC_Run(SubjectFiles,SubNo);
+[DCCdataset,DFCmask,ROINo,ScansNo,FCNo]=DCC_Run(SubjectFiles,handles.DCCoutPath,SubNo);
 
 set(handles.TaskSubNo_text,'string',['Subjects:' num2str(SubNo)])
 set(handles.TaskROINo_text,'string',['ROI:' num2str(ROINo)])
